@@ -3,20 +3,21 @@ global strcmp
 
 strcmp:
     mov rcx, 0
+    mov r8, 0
 
 .loop:
     mov al, byte [rdi + rcx]
-    mov sil, byte [rsi + rcx]
+    mov r8b, byte [rsi + rcx]
     cmp rax, 0
         je .fend
-    cmp rsi, 0
+    cmp r8, 0
         je .fend
-    cmp al, sil
+    cmp al, r8b
         jne .fend
     inc rcx
     jmp .loop
 .fend:
-    sub al, sil
+    sub al, r8b
 	movsx	rax, al
     jmp .end
 
