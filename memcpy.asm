@@ -3,6 +3,8 @@ global memcpy
 
 memcpy:
 	mov rcx, 0
+    cmp rdx, 1
+		jl .end
 
 .loop:
     cmp rcx, rdx
