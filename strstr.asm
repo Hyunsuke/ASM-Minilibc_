@@ -2,24 +2,26 @@ section .text
 global strstr
 
 strstr:
-	mov rcx, 0
-	MOV	AL, BYTE [RDI]
-	CMP	AL, 0x00
-	    JE	.both_string_null
+    jmp .check_null_string
+
+.check_null_string:
+    mov al, byte[rdi]
+    cmp al, 0
+        je .both_string_null
 
 .finding_loop:
 	mov	r9, 0
-    mov al, byte [rdi + rcx]
+	mov r10, 0
+    mov al, byte [rdi + r10]
     mov r8b, byte [rsi + r9]
     cmp al, 0
         je ret_zero
     cmp r8b, 0
         je ret_rdi
-    mov r10, rcx
-    inc rcx
+    inc r10
     cmp al, r8b
         je .loop
-	JMP	.finding_loop
+	jmp	.finding_loop
 
 .loop:
     mov al, byte [rdi + r10]
