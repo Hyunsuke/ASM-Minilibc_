@@ -3,6 +3,7 @@ global memset
 
 memset:
 	mov rcx, 0
+    mov rax, rdi
 	cmp rdx, 1
 		jl .end
 
