@@ -8,7 +8,7 @@ AS = nasm
 ASFLAGS = -f elf64
 
 LD = ld
-LDFLAGS = -shared
+LDFLAGS = -fPIC -shared
 
 SRC =	strlen.asm	\
 		strchr.asm	\
@@ -20,6 +20,8 @@ SRC =	strlen.asm	\
 		strncmp.asm	\
 		strcasecmp.asm	\
 		strstr.asm	\
+		strpbrk.asm	\
+		strcspn.asm	\
 
 OBJ = $(SRC:.asm=.o)
 
