@@ -9,6 +9,8 @@ memmove:
     sub rsp, rdx
     cmp rdx, 0
         je .ret_rdi
+    cmp rdi, rsi
+        jle .loop
 
 .loop:
     mov r8, qword [rsi + rcx]
