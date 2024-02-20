@@ -1,46 +1,36 @@
-section .text
-global memmove
+SECTION .text
+    global memmove
+    ;; void *memmove(void *dest, const void *src, size_t n);
 
 memmove:
-    push rbp
-    mov rbp, rsp
-    mov rcx, 0
-    mov r8, 0
-    sub rsp, rdx
-    cmp rdx, 0
-        je .ret_rdi
+    xor rcx, rcx
+
     cmp rdi, rsi
-        jle .loop
+    jle forward ; if dest <= src, forward copy
 
-.loop:
-    mov r8, qword [rsi + rcx]
-    mov byte [rsp + rcx], r8b
+    add rcx, rdx ; add n to rcx
+    dec rcx
+    jmp backward
+
+forward:
+    cmp rdx, 0 ; if n == 0, return dest
+    je end
+
+    mov r8b, [rsi + rcx] ; move byte from src to r8b
+    mov [rdi + rcx], r8b ; move byte from r8b to dest
     inc rcx
-    cmp rcx, rdx
-        jne .loop
-    mov rsi, rsp
-    jmp .memcpy
-    jmp .result
+    dec rdx
+    jmp forward
 
-.memcpy:
-	mov rcx, 0
+backward:
+    cmp rdx, 0 ; if n == 0, return dest
+    je end
+
+    mov r8b, [rsi + rdx - 1]
+    mov [rdi + rdx - 1], r8b
+    dec rdx
+    jmp backward
+
+end:
     mov rax, rdi
-
-.memloop:
-    cmp rcx, rdx
-        je .result
-    mov r8b, byte [rsi + rcx]
-    mov byte [rax + rcx], r8b
-    inc rcx
-    jmp .memloop
-
-.ret_rdi:
-    mov rax, rdi
-
-.result:
-    mov rsp, rbp
-    pop rbp
-    jmp .end
-
-.end:
     ret

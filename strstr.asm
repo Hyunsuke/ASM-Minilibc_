@@ -28,7 +28,7 @@ strstr:
     mov al, byte [rdi + r10]
     mov r8b, byte [rsi + r9]
     cmp al, 0
-        je .fend
+        je .found
     cmp r8b, 0
         je .ret_value
     inc r9
@@ -43,7 +43,7 @@ strstr:
         je ret_rdi
     jmp .finding_loop
 
-.fend:
+.found:
     cmp byte [rsi + r9], 0
         jne ret_zero
     sub rcx, 1
