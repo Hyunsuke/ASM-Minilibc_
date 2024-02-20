@@ -1,36 +1,29 @@
-SECTION .text
-    global memmove
-    ;; void *memmove(void *dest, const void *src, size_t n);
+section .text
+global memmove
 
 memmove:
-    xor rcx, rcx
-
+    mov rcx, 0
     cmp rdi, rsi
-    jle forward ; if dest <= src, forward copy
+        jle .left_to_right
+    jmp .right_to_left
 
-    add rcx, rdx ; add n to rcx
-    dec rcx
-    jmp backward
-
-forward:
-    cmp rdx, 0 ; if n == 0, return dest
-    je end
-
-    mov r8b, [rsi + rcx] ; move byte from src to r8b
-    mov [rdi + rcx], r8b ; move byte from r8b to dest
+.left_to_right:
+    cmp rdx, 0
+        je .end
+    mov r8b, byte [rsi + rcx]
+    mov byte [rdi + rcx], r8b
     inc rcx
     dec rdx
-    jmp forward
+    jmp .left_to_right
 
-backward:
-    cmp rdx, 0 ; if n == 0, return dest
-    je end
-
-    mov r8b, [rsi + rdx - 1]
-    mov [rdi + rdx - 1], r8b
+.right_to_left:
+    cmp rdx, 0
+        je .end
+    mov r8b, byte [rsi + rdx - 1]
+    mov byte [rdi + rdx - 1], r8b
     dec rdx
-    jmp backward
+    jmp .right_to_left
 
-end:
+.end:
     mov rax, rdi
     ret
