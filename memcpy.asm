@@ -10,7 +10,7 @@ memcpy:
 .loop:
     cmp rcx, rdx
         je .end
-    mov r8b, byte [rsi + rcx] ; J'aurais pu utiliser dil à la place de sil aussi
+    mov r8b, byte [rsi + rcx]
     mov byte [rdi + rcx], r8b
 	inc rcx
 	jmp .loop
